@@ -15,21 +15,37 @@ class StatsController extends Controller
 
         return view('stats', [
             'count' => $users->count(), 
+            'averageAge' => number_format($users->avg('age'),1),
             'users' => $users
                         ->all()
                         ->take(30)
         ]);
     }
 
-    public function getUsersByName($name)
+    public function getUsersByName(Request $request)
     {
         $users = new CustomUser();
         $result = $users
-                    ->where('first_name', $name)
+                    ->where('first_name', $request->get('name'))
                     ->get();
 
         return view('stats', [
             'count' => $result->count(), 
+            'averageAge' => number_format($result->avg('age'),1),
+            'users' => $result
+        ]);
+    }
+
+    public function getUsersByAgeRange(Request $request)
+    {
+        $users = new CustomUser();
+        $result = $users
+                    ->whereBetween('age',[$request->get('min'), $request->get('max')])
+                    ->get();
+
+        return view('stats', [
+            'count' => $result->count(), 
+            'averageAge' => number_format($result->avg('age'),1),
             'users' => $result
         ]);
     }
@@ -47,6 +63,7 @@ class StatsController extends Controller
 
         return view('popularNames', [
             'count' => 30, 
+            'averageAge' => number_format($result->avg('age'),1),
             'users' => $result
         ]);
     }
