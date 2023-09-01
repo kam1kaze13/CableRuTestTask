@@ -1,16 +1,20 @@
 @extends('layout')
 
-@section('title')Главная страница@endsection
+@section('title')Статистика по пользователям@endsection
 
 @section('main_content')
     <h1>
         Все пользователи
     </h1>
     <h3>
-        Показано 30 записей
+        Число пользователей: {{ $count }}
     </h3>
     <br>
     
+    <a href="/stats/popularNames" class="btn btn-primary" type="button">Просмотр наиболее популярных имен пользователей</a>
+
+    <br>
+    <br>
     <div class="table-responsive small">
         <table class="table table-striped table-sm">
             <thead>
